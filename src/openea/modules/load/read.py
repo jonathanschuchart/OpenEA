@@ -38,8 +38,12 @@ def generate_sharing_id(train_links, kg1_triples, kg1_elements, kg2_triples, kg2
     else:
         index = 0
         for e1, e2 in train_links:
-            assert e1 in kg1_elements
-            assert e2 in kg2_elements
+            if e1 not in kg1_elements:
+                continue
+            if e2 not in kg2_elements:
+                continue
+            # assert e1 in kg1_elements
+            # assert e2 in kg2_elements
             ids1[e1] = index
             ids2[e2] = index
             index += 1

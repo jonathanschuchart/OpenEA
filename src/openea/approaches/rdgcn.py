@@ -3,6 +3,7 @@ import time
 import numpy as np
 import tensorflow as tf
 import scipy
+from scipy import sparse
 import pandas as pd
 import string
 
@@ -422,14 +423,19 @@ class RDGCN(BasicModel):
         names.iloc[:, 2] = names.iloc[:, 2].str.replace(r'[{}]+'.format(string.punctuation), '').str.split(' ')
         # load word embedding
         with open(self.word_embed, 'r') as f:
-            w = f.readlines()
-            w = pd.Series(w[1:])
+            w = (line.split(' ') for line in f.readlines()[1:])
+            w = [(line[0], [np.float(l) for l in line[1:]]) for line in w]
+            # w = pd.Series(w[1:])
 
-        we = w.str.split(' ')
-        word = we.apply(lambda x: x[0])
-        w_em = we.apply(lambda x: x[1:])
+        word, w_em = zip(*w)
+        word = pd.Series(word)
+        # w = w.str.split(' ')
+        # word = w.apply(lambda x: x[0])
+        # w_em = w.apply(lambda x: x[1:])
         print('concat word embeddings')
-        word_em = np.stack(w_em.values, axis=0).astype(np.float)
+        # word_em = np.stack(w_em.values, axis=0).astype(np.float)
+        word_em = np.array(w_em, copy=False)#.astype(np.float)
+        # w_em = None
         word_em = np.append(word_em, np.zeros([1, 300]), axis=0)
         print('convert words to ids')
         w_in_desc = []
@@ -440,6 +446,7 @@ class RDGCN(BasicModel):
         un_logged_id = len(word)
 
         all_word = pd.concat(
+            # [pd.Series(word.index, word.values),
             [pd.Series(word.index, word.values),
              pd.Series([un_logged_id, ] * len(un_logged_words), index=un_logged_words)])
 

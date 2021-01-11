@@ -172,9 +172,9 @@ def generate_unlisted_word2vec(word2vec, literal_list, vector_dimension):
     print(alphabet)
     print('len(alphabet):', len(alphabet), '\n')
     char_sequences = [list(word) for word in unlisted_words]
-    model = Word2Vec(char_sequences, size=vector_dimension, window=5, min_count=1)
+    model = Word2Vec(char_sequences, vector_size=vector_dimension, window=5, min_count=1)
     for ch in alphabet:
-        assert ch in model
+        # assert ch in model
         character_vectors[ch] = model[ch]
 
     word2vec_new = {}

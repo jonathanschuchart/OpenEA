@@ -86,7 +86,7 @@ def generate_neg_triples(pos_batch, all_triples_set, entities_list, neg_triples_
     return neg_batch
 
 
-def generate_neg_triples_fast(pos_batch, all_triples_set, entities_list, neg_triples_num, neighbor=None, max_try=10):
+def generate_neg_triples_fast(pos_batch, all_triples_set, entities_list, neg_triples_num, neighbor=None, max_try=20):
     if neighbor is None:
         neighbor = dict()
     neg_batch = list()

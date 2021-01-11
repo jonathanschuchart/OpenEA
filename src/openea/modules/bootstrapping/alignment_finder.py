@@ -105,6 +105,7 @@ def mwgm_graph_tool(pairs, sim_mat):
     res = max_cardinality_matching(g, heuristic=True, weight=weight_map, minimize=False)
     edge_index = np.where(res.get_array() == 1)[0].tolist()
     matched_pairs = set()
+    # print(len(pairs), max(edge_index))
     for index in edge_index:
         matched_pairs.add(pairs[index])
     return matched_pairs
